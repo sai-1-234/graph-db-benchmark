@@ -1,8 +1,16 @@
-# Graph Database Cloud Benchmark
+# Graph Database Benchmark
 
 ## Objective
 
-This project benchmarks **CognoDB Cloud** against managed graph database platforms using the same dataset, identical workloads, and reproducible benchmark scripts.
+This project benchmarks multiple graph databases using the same public dataset and identical workloads.
+
+The benchmark measures:
+
+- Data loading performance
+- Traversal performance
+- Lookup performance
+- Aggregation performance
+- Mixed workload performance
 
 ## Databases
 
@@ -14,52 +22,77 @@ This project benchmarks **CognoDB Cloud** against managed graph database platfor
 
 ## Dataset
 
-Dataset: SNAP soc-Epinions1
+Dataset:
+
+SNAP - soc-Epinions1
 
 Source:
+
 https://snap.stanford.edu/data/soc-Epinions1.html
 
-Nodes: 75,879
+Statistics
 
-Relationships: 508,837
+- Nodes: 75,879
+- Relationships: 508,837
 
 ## Project Structure
 
 ```
 benchmark/
+configs/
 datasets/
-results/
 docs/
+results/
 ```
 
-## Benchmark Metrics
+## Benchmarks
 
-- Data Loading
-- 1-Hop Traversal
-- 2-Hop Traversal
-- 3-Hop Traversal
-- Point Lookup
-- Indexed Lookup
-- Aggregation
-- Mixed Read/Write Workload
+### Load Benchmark
+
+Measures:
+
+- Import time
+- Relationships/sec
+
+### Traversal
+
+Measures:
+
+- 1-hop traversal
+
+### Lookup
+
+Measures:
+
+- Point lookup
+
+### Aggregation
+
+Measures:
+
+- Count operations
+
+### Workload
+
+Measures:
+
+- Concurrent read workload
 
 ## Environment
 
-Python 3.8
+Python 3.8+
 
-Neo4j Driver
+Neo4j Python Driver
 
 python-dotenv
 
-## Running
-
-Install dependencies
+## Install
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run benchmark
+## Run
 
 ```bash
 python benchmark/benchmark_runner.py
@@ -67,8 +100,10 @@ python benchmark/benchmark_runner.py
 
 ## Results
 
-Results are stored inside the `results` folder.
+Benchmark results are stored in the `results/` folder.
 
-## Notes
+## Security
 
-Passwords and connection URIs are stored in environment variables and are not committed to Git.
+Database credentials are **not committed** to Git.
+
+Use `.env.example` as a template.
