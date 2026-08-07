@@ -2,156 +2,298 @@
 
 ## Objective
 
-This project benchmarks multiple graph databases using the same public dataset and identical workloads.
+This project benchmarks **CognoDB Cloud** against multiple graph database platforms using the same public dataset, identical logical workloads, and a common benchmark framework.
 
-The benchmark measures:
+The objective is to provide a **fair, reproducible, and transparent comparison** of graph database performance under free-tier resource constraints.
 
-- Data loading performance
-- Traversal performance
-- Lookup performance
-- Aggregation performance
-- Mixed workload performance
+---
 
-## Databases
+# Databases Evaluated
 
-- CognoDB Cloud
-- Neo4j AuraDB
-- Memgraph
-- FalkorDB
-- Apache AGE
+| Database | Status |
+|----------|--------|
+| CognoDB Cloud | ✅ Benchmarked |
+| Neo4j AuraDB Free | ✅ Benchmarked |
+| Memgraph Cloud | ✅ Benchmarked |
+| FalkorDB Cloud | ⚠️ Instance deployed, benchmark integration not completed |
+| Apache AGE | ❌ Not benchmarked |
 
-## Dataset
+---
 
-Dataset:
+# Dataset
 
-SNAP - soc-Epinions1
+**Dataset Name**
 
-Source:
+SNAP - soc-Epinions1 Social Network
+
+**Source**
 
 https://snap.stanford.edu/data/soc-Epinions1.html
 
-Statistics
+### Dataset Statistics
 
-- Nodes: 75,879
-- Relationships: 508,837
+- Nodes: **75,879**
+- Relationships: **508,837**
 
-## Project Structure
+The same dataset was used for every database whenever platform limits allowed.
+
+---
+
+# Project Structure
 
 ```
-benchmark/
-configs/
-datasets/
-docs/
-results/
+graph-db-benchmark/
+│
+├── benchmark/
+│   ├── aggregation.py
+│   ├── benchmark_runner.py
+│   ├── connect.py
+│   ├── data_loader.py
+│   ├── db.py
+│   ├── lookup.py
+│   ├── traversal.py
+│   ├── workload.py
+│   └── utils.py
+│
+├── datasets/
+│
+├── results/
+│
+├── README.md
+├── requirements.txt
+├── .env.example
+└── .gitignore
 ```
 
-## Benchmarks
+---
 
-### Load Benchmark
+# Platform Configuration
+
+The benchmark attempts to compare databases using comparable free-tier cloud resources.
+
+| Database | Deployment | Resource Tier |
+|-----------|------------|---------------|
+| CognoDB Cloud | Free Tier | Provider default free tier |
+| Neo4j AuraDB | Free Tier | Provider default free tier |
+| Memgraph Cloud | Free Trial | Provider default trial tier |
+| FalkorDB Cloud | Free Tier | Provider default free tier |
+
+Free-tier limitations are documented where they affected benchmarking.
+
+---
+
+# Benchmark Methodology
+
+Every benchmark follows the same methodology.
+
+- Same dataset
+- Same logical queries
+- Same benchmark framework
+- Same client machine
+- Same benchmark scripts
+- Warm-up before measurements
+- 100 benchmark iterations for read workloads
+- Reported **P50** and **P95** latency
+- Mixed workload executed with **10 concurrent workers**
+- Honest reporting of free-tier limitations and failed runs
+
+---
+
+# Benchmarks
+
+## Data Loading
 
 Measures:
 
-- Import time
+- Total load time
 - Relationships/sec
 
-### Traversal
+---
 
-Measures:
+## Traversal Benchmark
 
-- 1-hop traversal
+Measures
 
-### Lookup
+- 1-Hop Traversal
+- 2-Hop Traversal
+- 3-Hop Traversal
 
-Measures:
+Reports
+
+- P50 latency
+- P95 latency
+
+---
+
+## Lookup Benchmark
+
+Measures
 
 - Point lookup
 
-### Aggregation
+Reports
 
-Measures:
+- P50 latency
+- P95 latency
 
-- Count operations
+---
 
-### Workload
+## Aggregation Benchmark
 
-Measures:
+Measures
 
-- Concurrent read workload
+- Count aggregation
 
-## Environment
+Reports
 
-Python 3.8+
+- P50 latency
+- P95 latency
 
-Neo4j Python Driver
+---
 
-python-dotenv
+## Mixed Workload
 
-## Install
+Measures
+
+- Concurrent mixed read/write workload
+
+Configuration
+
+- 10 concurrent workers
+- 100 operations
+- Reports sustained throughput (queries/sec)
+
+---
+
+# Benchmark Results
+
+| Database | Relationships | 1-Hop P50 (ms) | 1-Hop P95 (ms) | Lookup P50 (ms) | Lookup P95 (ms) | Aggregation P50 (ms) | Aggregation P95 (ms) | Mixed Workload |
+|-----------|--------------:|---------------:|---------------:|----------------:|----------------:|---------------------:|---------------------:|----------------|
+| CognoDB | 508000 | 1075.030 | 1618.784 | 902.682 | 1409.763 | 319.959 | 421.918 | Completed |
+| Neo4j AuraDB | 400000 | 413.829 | 701.202 | 413.939 | 718.284 | 279.022 | 331.508 | Completed |
+| Memgraph | 508837 | 504.614 | 1077.575 | 479.467 | 1020.467 | 298.543 | 401.395 | Completed |
+| FalkorDB | — | — | — | — | — | — | — | Not Completed |
+| Apache AGE | — | — | — | — | — | — | — | Not Tested |
+
+---
+
+# Reproducing the Benchmark
+
+## Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Run
+## Configure environment
+
+Create the appropriate environment file.
+
+Example
+
+```
+.env
+.env.neo4j
+.env.memgraph
+```
+
+Credentials are **not included** in this repository.
+
+---
+
+## Load dataset
+
+```bash
+python benchmark/data_loader.py
+```
+
+---
+
+## Execute benchmark
 
 ```bash
 python benchmark/benchmark_runner.py
 ```
 
-## Results
+Benchmark results are automatically written to the **results/** directory.
 
-Benchmark results are stored in the `results/` folder.
+---
 
-## Security
+# Security
 
-Database credentials are **not committed** to Git.
+No credentials are committed to this repository.
+
+Environment variables are loaded from local `.env` files.
 
 Use `.env.example` as a template.
 
-## Benchmark Results
+---
 
-| Database   | Nodes | Relationships | Load Time (s) | Relationships/s | Traversal P50 | Traversal P95 | Lookup P50 | Lookup P95 | Aggregation P50 | Aggregation P95 | Notes |
-| ---------- | ----: | ------------: | ------------: | --------------: | ------------: | ------------: | ---------: | ---------: | --------------: | --------------: | ----- |
-| CognoDB    |       |               |               |                 |               |               |            |            |                 |                 |       |
-| Neo4j Aura |       |               |               |                 |               |               |            |            |                 |                 |       |
-| Memgraph   |       |               |               |                 |               |               |            |            |                 |                 |       |
-| FalkorDB   |       |               |               |                 |               |               |            |            |                 |                 |       |
-| Apache AGE |       |               |               |                 |               |               |            |            |                 |                 |       |
+# Caveats
 
-## Caveats
+- Neo4j Aura Free reached the provider's free-tier relationship limit at approximately **400,000 relationships**, preventing import of the complete dataset.
 
-- Neo4j Aura Free reached its free-tier relationship limit at approximately 400,000 relationships, so the full dataset could not be loaded.
+- CognoDB successfully loaded approximately **508,000 relationships**. During loading, a small number of transient network retries occurred but benchmarking completed successfully.
 
-- CognoDB successfully loaded approximately 508,000 relationships. During loading, a few transient network connection retries occurred, but the import completed sufficiently for benchmarking.
+- Memgraph successfully loaded the complete dataset after resolving transaction compatibility by using explicit transactions instead of managed write transactions.
 
-- Memgraph connection testing succeeded, but bulk data loading encountered SSL/TLS connection issues, preventing benchmark execution.
+- FalkorDB Cloud instance was successfully deployed and connectivity was investigated. Full benchmark integration was not completed because the existing benchmark framework was built around the Neo4j Bolt driver while FalkorDB Cloud requires a different client integration.
 
-- FalkorDB cloud instance was successfully deployed, but integration with the existing Neo4j-driver-based benchmark framework was not completed during the assignment.
+- Free-tier cloud services occasionally exhibited network latency and throttling which may influence observed benchmark results.
 
-## Analysis
+---
 
-This benchmark compared CognoDB Cloud with other managed graph database platforms using the same benchmark framework and dataset where possible.
+# Analysis
 
-### Key Observations
+This benchmark compared multiple graph database platforms using identical datasets and equivalent benchmark workloads wherever possible.
 
-- Neo4j Aura demonstrated lower traversal and lookup latency than CognoDB in the observed benchmark runs, but the free-tier relationship limit prevented loading the complete dataset.
+## Observations
 
-- CognoDB successfully loaded approximately 508,000 relationships and completed all benchmark workloads. During loading, a small number of transient connection retries occurred, but benchmarking completed successfully.
+- Neo4j AuraDB produced the lowest observed lookup and traversal latency but could not load the complete dataset because of free-tier limits.
 
-- Aggregation latency was relatively similar between CognoDB and Neo4j Aura compared with traversal and lookup latency.
+- CognoDB successfully loaded the complete benchmark dataset and executed every benchmark workload using the common benchmark framework.
 
-- Free-tier limitations significantly affected benchmarking. Platform quotas, storage limits, and cloud network latency influenced the observed performance and the ability to load identical datasets.
+- Memgraph successfully loaded the complete dataset after adapting the loader to use explicit transactions and produced competitive lookup and aggregation performance.
 
-### Fairness
+- Aggregation latency across databases was more consistent than traversal latency.
 
-Every benchmark used the same benchmark framework, identical logical queries, and the same client machine. Where platforms imposed free-tier limitations, these limitations have been documented as part of the benchmark results rather than omitted.
+- Deep (3-hop) traversals produced noticeably higher latency than shallow traversals across all tested platforms.
 
-## Methodology
+## Fairness
 
-- Same dataset used for every platform.
-- Same benchmark scripts executed for every platform.
-- Measurements collected after warm-up.
-- Benchmarks executed from the same client machine.
-- Free-tier limitations and observed caveats are documented.
+Every benchmark used:
 
-Neo4j Aura Free reached its free-tier storage limit at approximately 400,000 relationships, so the complete SNAP soc-Epinions1 dataset could not be loaded without upgrading the instance.
+- the same dataset
+- the same benchmark framework
+- identical logical queries
+- the same client machine
+
+Where cloud providers imposed free-tier limitations, these limitations are documented rather than omitted.
+
+The objective of this benchmark is **not** to determine a universal "best" graph database, but to provide a fair, reproducible comparison using identical datasets, workloads, and benchmark methodology under comparable free-tier resource constraints.
+
+---
+
+# Technologies Used
+
+- Python 3.8+
+- Neo4j Python Driver
+- python-dotenv
+- concurrent.futures
+- CSV
+- Cypher
+
+---
+
+# Repository
+
+The repository contains:
+
+- Automated benchmark framework
+- Data loading scripts
+- Benchmark runners
+- Result collection
+- Reproducible instructions
+- Benchmark analysis
+
+All benchmark code was developed to allow future extension with additional graph database platforms.
