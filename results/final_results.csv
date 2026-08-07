@@ -29,3 +29,7 @@ Lookup P95: 718.284
 Aggregation P50: 279.022
 Aggregation P95: 331.508
 Mixed workload: Completed
+
+| Database | Relationships | 1-Hop P50 | 1-Hop P95 | 2-Hop P50 | 2-Hop P95 | 3-Hop P50 | 3-Hop P95 | Lookup P50 | Lookup P95 | Aggregation P50 | Aggregation P95 | Throughput |
+| -------- | ------------: | --------: | --------: | --------: | --------: | --------: | --------: | ---------: | ---------: | --------------: | --------------: | ---------: |
+| Memgraph |        508837 |   504.614 |  1077.575 |   499.740 |   982.208 |   620.487 |  6249.831 |    479.467 |   1020.467 |         298.543 |         401.395 |   3.21 q/s |

@@ -54,13 +54,16 @@ with driver.session() as session:
             relationships += 1
 
             if len(batch) >= BATCH_SIZE:
-                session.execute_write(insert_batch, batch)
+                with session.begin_transaction() as tx:
+                    insert_batch(tx, batch)
+                    tx.commit()
                 print(f"Loaded {relationships} relationships...")
                 batch = []
 
         if batch:
-            session.execute_write(insert_batch, batch)
-
+            with session.begin_transaction() as tx:
+                insert_batch(tx, batch)
+                tx.commit()
 end = time.time()
 
 elapsed = end - start
