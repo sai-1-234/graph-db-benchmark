@@ -1,35 +1,6 @@
-Database,Nodes,Relationships,Load Time(s),Relationships/sec,Traversal P50(ms),Traversal P95(ms),Lookup P50(ms),Lookup P95(ms),Aggregation P50(ms),Aggregation P95(ms),Mixed Workload
-CognoDB,,,,,,,,,,,
-Neo4j Aura,,400000,,,
-413.829,701.202,413.939,718.284,279.022,331.508,Completed
-Memgraph,,,,,,,,,,,
-FalkorDB,,,,,,,,,,,
-Apache AGE,,,,,,,,,,,
-| Database   | Relationships | Traversal P50 | Traversal P95 | Lookup P50 | Lookup P95 | Aggregation P50 | Aggregation P95 | Mixed Workload |
-| ---------- | ------------: | ------------: | ------------: | ---------: | ---------: | --------------: | --------------: | -------------- |
-| CognoDB    |        508000 |      1075.030 |      1618.784 |    902.682 |   1409.763 |         319.959 |         421.918 | Completed      |
-| Neo4j Aura |        400000 |       413.829 |       701.202 |    413.939 |    718.284 |         279.022 |         331.508 | Completed      |
-
-CognoDB
-Relationships: 508000
-Traversal P50: 1075.030
-Traversal P95: 1618.784
-Lookup P50: 902.682
-Lookup P95: 1409.763
-Aggregation P50: 319.959
-Aggregation P95: 421.918
-Mixed workload: Completed
-
-Neo4j Aura
-Relationships: 400000
-Traversal P50: 413.829
-Traversal P95: 701.202
-Lookup P50: 413.939
-Lookup P95: 718.284
-Aggregation P50: 279.022
-Aggregation P95: 331.508
-Mixed workload: Completed
-
-| Database | Relationships | 1-Hop P50 | 1-Hop P95 | 2-Hop P50 | 2-Hop P95 | 3-Hop P50 | 3-Hop P95 | Lookup P50 | Lookup P95 | Aggregation P50 | Aggregation P95 | Throughput |
-| -------- | ------------: | --------: | --------: | --------: | --------: | --------: | --------: | ---------: | ---------: | --------------: | --------------: | ---------: |
-| Memgraph |        508837 |   504.614 |  1077.575 |   499.740 |   982.208 |   620.487 |  6249.831 |    479.467 |   1020.467 |         298.543 |         401.395 |   3.21 q/s |
+Database,Nodes,Relationships,Load Time(s),Relationships/sec,Traversal1HopP50(ms),Traversal1HopP95(ms),Traversal2HopP50(ms),Traversal2HopP95(ms),Traversal3HopP50(ms),Traversal3HopP95(ms),LookupP50(ms),LookupP95(ms),AggregationP50(ms),AggregationP95(ms),MixedWorkload
+CognoDB,,508000,,,1075.030,1618.784,,,,,902.682,1409.763,319.959,421.918,Completed
+Neo4j Aura,,400000,,,413.829,701.202,,,,,413.939,718.284,279.022,331.508,Completed
+Memgraph,,508837,8871.80,57.35,504.614,1077.575,499.740,982.208,620.487,6249.831,479.467,1020.467,298.543,401.395,Completed
+FalkorDB,,,,,,,,,,,,,,,Not Completed
+Apache AGE,,,,,,,,,,,,,,,Not Tested
