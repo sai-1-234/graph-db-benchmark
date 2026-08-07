@@ -2,3 +2,5 @@ Benchmark,P50(ms),P95(ms)
 Count Users,285.586,348.587
 Count Users,279.022,331.508
 Count Users,319.959,421.918
+Count Users,253.376,320.27
+Count Users,275.526,398.951
