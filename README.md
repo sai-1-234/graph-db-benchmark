@@ -107,3 +107,23 @@ Benchmark results are stored in the `results/` folder.
 Database credentials are **not committed** to Git.
 
 Use `.env.example` as a template.
+## Benchmark Results
+
+| Database | Nodes | Relationships | Load Time (s) | Relationships/s | Traversal P50 | Traversal P95 | Lookup P50 | Lookup P95 | Aggregation P50 | Aggregation P95 | Notes |
+|----------|------:|--------------:|--------------:|----------------:|--------------:|--------------:|-----------:|-----------:|----------------:|----------------:|------|
+| CognoDB | | | | | | | | | | | |
+| Neo4j Aura | | | | | | | | | | | |
+| Memgraph | | | | | | | | | | | |
+| FalkorDB | | | | | | | | | | | |
+| Apache AGE | | | | | | | | | | | |
+
+## Methodology
+
+- Same dataset used for every platform.
+- Same benchmark scripts executed for every platform.
+- Measurements collected after warm-up.
+- Benchmarks executed from the same client machine.
+- Free-tier limitations and observed caveats are documented.
+
+
+Neo4j Aura Free reached its free-tier storage limit at approximately 400,000 relationships, so the complete SNAP soc-Epinions1 dataset could not be loaded without upgrading the instance.

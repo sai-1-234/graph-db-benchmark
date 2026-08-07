@@ -13,7 +13,8 @@ PASSWORD = os.getenv("NEO4J_PASSWORD")
 # Create a connection to the database
 driver = GraphDatabase.driver(
     URI,
-    auth=(USERNAME, PASSWORD)
+    auth=(USERNAME, PASSWORD),
+   
 )
 
 # Test the connection

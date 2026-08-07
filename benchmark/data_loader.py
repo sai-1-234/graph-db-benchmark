@@ -4,15 +4,16 @@ import time
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
-load_dotenv()
+# Load environment file (.env by default or .env.neo4j, etc.)
+ENV_FILE = os.getenv("ENV_FILE", ".env")
+load_dotenv(ENV_FILE)
 
 URI = os.getenv("NEO4J_URI")
 USERNAME = os.getenv("NEO4J_USERNAME")
 PASSWORD = os.getenv("NEO4J_PASSWORD")
 
 DATASET = "datasets/soc-Epinions1.txt"
-
-BATCH_SIZE = 1000
+BATCH_SIZE = 100
 
 driver = GraphDatabase.driver(
     URI,
@@ -23,16 +24,13 @@ driver = GraphDatabase.driver(
 def insert_batch(tx, batch):
     tx.run("""
     UNWIND $rows AS row
-
     MERGE (a:User {id: row.source})
     MERGE (b:User {id: row.target})
-
     MERGE (a)-[:TRUSTS]->(b)
     """, rows=batch)
 
 
 batch = []
-
 relationships = 0
 
 start = time.time()
@@ -72,6 +70,6 @@ print("LOAD COMPLETED")
 print("===================================")
 print(f"Relationships Loaded : {relationships}")
 print(f"Total Time           : {elapsed:.2f} seconds")
-print(f"Relationships/Second : {relationships/elapsed:.2f}")
+print(f"Relationships/Second : {relationships / elapsed:.2f}")
 
 driver.close()
